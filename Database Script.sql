@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS `people`;
 USE `people`;
 
 --
--- Table structure for table `people`
+-- Table structure for table `occupations`
 --
 
 DROP TABLE IF EXISTS `occupations`;
@@ -14,7 +14,7 @@ CREATE TABLE `occupations` (
 );
 
 --
--- Data for table `user`
+-- Table structure for table `users`
 --
 DROP TABLE IF EXISTS `users`;
 
