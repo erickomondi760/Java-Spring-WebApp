@@ -18,16 +18,16 @@ import lombok.NoArgsConstructor;
 public class Occupation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @NotNull
     @NotBlank
     @Size(min = 3,message = "title should be at least 3 characters")
     private String title;
 
-    @OneToOne(mappedBy = "occupation", cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
-    @JsonIgnore
+    @OneToOne(mappedBy = "occupation", cascade = CascadeType.ALL,
+    fetch = FetchType.LAZY)
     private User user;
 
 }

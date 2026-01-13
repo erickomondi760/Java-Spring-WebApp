@@ -2,14 +2,12 @@ package com.user.web_app.controller;
 
 
 import com.user.web_app.dto.UserDTO;
-import com.user.web_app.service.UserResponse;
+import com.user.web_app.dto.UserResponse;
 import com.user.web_app.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("app")
@@ -19,15 +17,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("users")
-    public ResponseEntity<Object> addUser(@Valid @RequestBody UserDTO userDTO){
-        userService.createUser(userDTO);
-        return ResponseEntity.ok("A new user has been created");
+    public ResponseEntity<UserDTO> addUser(@Valid @RequestBody UserDTO userDTO){
+        return ResponseEntity.ok(userService.createUser(userDTO));
     }
 
-    @PutMapping("users")
-    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDTO userDTO){
-        userService.updateUser(userDTO);
-        return ResponseEntity.ok("User information have been updated");
+    @PutMapping("users/{id}")
+    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserDTO userDTO,@PathVariable int id){
+        return ResponseEntity.ok(userService.updateUser(userDTO,id));
     }
 
     @GetMapping("users/{id}")
@@ -51,7 +47,7 @@ public class UserController {
         return ResponseEntity.ok("User successfully deleted");
     }
 
-    @GetMapping("users/{occupation}")
+    @GetMapping("users/by-occupation/{occupation}")
     public ResponseEntity<UserResponse> getUsersByOccupation(
             @RequestParam(name="pageNumber",defaultValue = "0",required = false)int pageNumber,
             @RequestParam(name = "sortBy",defaultValue = "id",required = false) String sortBy,

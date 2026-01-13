@@ -1,16 +1,13 @@
 package com.user.web_app.service;
 
 import com.user.web_app.dto.UserDTO;
-import com.user.web_app.entity.User;
+import com.user.web_app.dto.UserResponse;
 import jakarta.validation.Valid;
-import org.jspecify.annotations.Nullable;
-
-import java.util.List;
 
 public interface UserService {
-    void createUser(UserDTO userDTO);
+    UserDTO createUser(UserDTO userDTO);
 
-    void updateUser(@Valid UserDTO userDTO);
+    UserDTO updateUser(@Valid UserDTO userDTO,int id);
 
     UserDTO findUser(int id);
 

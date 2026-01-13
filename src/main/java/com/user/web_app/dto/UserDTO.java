@@ -1,5 +1,7 @@
 package com.user.web_app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.user.web_app.entity.Occupation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.JoinColumn;
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserDTO {
 
+    private  Integer id;
 
     @NotNull
     @NotBlank
@@ -32,6 +35,12 @@ public class UserDTO {
     @NotBlank
     @NotNull
     private String email;
+
+    @NotNull
+    @NotBlank
+    @Size(min = 4,message = "Profession should be at least 4 characters")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String profession;
 
     private OccupationDTO occupationDTO;
 

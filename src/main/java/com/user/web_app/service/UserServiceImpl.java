@@ -3,11 +3,13 @@ package com.user.web_app.service;
 
 import com.user.web_app.dto.OccupationDTO;
 import com.user.web_app.dto.UserDTO;
+import com.user.web_app.dto.UserResponse;
+import com.user.web_app.entity.Occupation;
 import com.user.web_app.entity.User;
 import com.user.web_app.exception.APIException;
 import com.user.web_app.exception.ResourceNotFoundException;
+import com.user.web_app.repository.OccupationRepository;
 import com.user.web_app.repository.UserRepository;
-import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,11 +28,14 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
     @Autowired
+    private OccupationRepository occupationRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Transactional
     @Override
-    public void createUser(UserDTO userDTO) {
+    public UserDTO createUser(UserDTO userDTO) {
 
         User user = userRepository.findByEmail(userDTO.getEmail());
 
@@ -44,25 +49,33 @@ public class UserServiceImpl implements UserService{
         newUser.setFirstName(userDTO.getFirstName());
         newUser.setLastName(userDTO.getLastName());
 
-        userRepository.save(newUser);
+
+        //Creating occupation
+        Occupation occupation = occupationRepository.findByTitle(userDTO.getProfession());
+
+        if(occupation != null)
+            throw new APIException("Occupation title already exist");
+
+        occupation = new Occupation();
+        occupation.setTitle(userDTO.getProfession());
+
+        Occupation savedOccupation = occupationRepository.save(occupation);
+        newUser.setOccupation(savedOccupation);
+
+        return modelMapper.map(userRepository.save(newUser), UserDTO.class);
     }
 
     @Transactional
     @Override
-    public void updateUser(UserDTO userDTO) {
-        User user = userRepository.findByEmail(userDTO.getEmail());
-
-        if(user == null){
-            throw new ResourceNotFoundException("User not found");
-        }
-
-        user = userRepository.findByEmail(userDTO.getEmail());
+    public UserDTO updateUser(UserDTO userDTO,int id) {
+        User user = userRepository.findById(id).orElseThrow(
+                ()->new ResourceNotFoundException("user of id:"+id+" does not exist"));
 
         user.setEmail(userDTO.getEmail());
         user.setLastName(userDTO.getLastName());
         user.setFirstName(userDTO.getFirstName());
 
-        userRepository.save(user);
+        return modelMapper.map(userRepository.save(user), UserDTO.class);
     }
 
     @Override
@@ -120,6 +133,7 @@ public class UserServiceImpl implements UserService{
     public void deleteUser(int id) {
         User user = userRepository.findById(id).orElseThrow(
                 ()->new ResourceNotFoundException("user of id:"+id+" does not exist"));
+
         userRepository.delete(user);
         userRepository.flush();
     }
@@ -134,7 +148,28 @@ public class UserServiceImpl implements UserService{
         Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
 
         Page<User> page = userRepository.findByOccupation(pageable,occupation);
-        return null;
+
+        List<UserDTO> userDTOS = page.stream().map(user->{
+            UserDTO userDTO = modelMapper.map(user,UserDTO.class);
+
+            OccupationDTO occupationDTO = null;
+
+            if(user.getOccupation() != null){
+                occupationDTO = modelMapper.map(user.getOccupation(), OccupationDTO.class);
+                userDTO.setOccupationDTO(occupationDTO);
+            }
+
+            return userDTO;
+        }).toList();
+
+        UserResponse userResponse = new UserResponse();
+        userResponse.setLastPage(page.isLast());
+        userResponse.setUserDTO(userDTOS);
+        userResponse.setPageSize(page.getSize());
+        userResponse.setTotalPages(page.getTotalPages());
+        userResponse.setPageNumber(page.getNumber());
+
+        return userResponse;
     }
 
 

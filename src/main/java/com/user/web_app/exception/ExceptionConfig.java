@@ -1,6 +1,7 @@
 package com.user.web_app.exception;
 
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,9 @@ public class ExceptionConfig {
 
     @ExceptionHandler(APIException.class)
     public ResponseEntity<ErrorResponse> showException(APIException e){
-        APIException apiException = new APIException(e.getMessage(),e.getResponseCode());
-
-        return ResponseEntity.status(e.getResponseCode()).body(new ErrorResponse(e.getResponseCode(),String.valueOf(e.getResponseCode())
-                , Instant.now()));
+        System.out.println(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value()
+                ,e.getMessage(), Instant.now()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -48,6 +48,16 @@ public class ExceptionConfig {
                 e.getMessage(),Instant.now());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String,String>> constraintViolationHandler(ConstraintViolationException e){
+        Map<String,String> map = new HashMap<>();
+
+        e.getConstraintViolations().forEach(constraintViolation -> {
+            map.put(constraintViolation.getPropertyPath().toString(),e.getMessage());
+        });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 
 }

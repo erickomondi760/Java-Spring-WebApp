@@ -1,6 +1,5 @@
-package com.user.web_app.service;
+package com.user.web_app.dto;
 
-import com.user.web_app.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

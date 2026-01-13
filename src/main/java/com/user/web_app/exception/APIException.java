@@ -12,9 +12,12 @@ public class APIException extends RuntimeException{
         super();
     }
 
+
     public APIException(String message) {
         super(message);
+        this.message = message;
     }
+
 
     public APIException(String message, int responseCode) {
         this.message = message;
