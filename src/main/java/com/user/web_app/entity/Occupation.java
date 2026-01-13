@@ -8,9 +8,12 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
-@Table(name = "occupation")
+@Table(name = "occupations")
+@ToString(exclude = "user")
+
 
 @Data
 @NoArgsConstructor
@@ -26,8 +29,7 @@ public class Occupation {
     @Size(min = 3,message = "title should be at least 3 characters")
     private String title;
 
-    @OneToOne(mappedBy = "occupation", cascade = CascadeType.ALL,
-    fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "occupation", cascade = CascadeType.ALL)
     private User user;
 
 }
