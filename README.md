@@ -13,7 +13,7 @@
  3.delete user 1(an example of an id value).<br>
 
 <br><br>
- 1.list occupation.<br>
+ 1.list occupations.<br>
  2.get occupation 1(an example of an id value).<br>
  3.delete occupation 1(an example of an id value).
 
@@ -56,6 +56,7 @@ get an occupation
  
 
  
+
 
 
 
