@@ -1,7 +1,7 @@
 ﻿## Spring Boot CRUD WebApp
 
 ### About the app
- This is web application with an ability to fetch and modify database records. Developed using Spring Boot and Java, it has two data objects as the entities.
+ This is a web application with an ability to fetch and modify database records. Developed using Spring Boot and Java, it has two data objects as the entities.
  The two entities are User and Occupation. The User entity has a foreign key column pointing to occupation id. The database script file and the database design image are included among the project files as Database script and ER Diagram.png respectively.
 
  ### REPL and APIs
@@ -56,6 +56,7 @@ get an occupation
  
 
  
+
 
 
 
