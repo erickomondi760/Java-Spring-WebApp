@@ -2,7 +2,7 @@
 
 ### About the app
  This is a web application with an ability to fetch and modify database records. Developed using Spring Boot and Java, it has two data objects as the entities.
- The two entities are User and Occupation. The User entity has a foreign key column pointing to occupation id. The database script file and the database design image are included among the project files as Database script and ER Diagram.png respectively.
+ The two entities are User and Occupation. The User entity has a foreign key column pointing to the field of occupation id. The database script file and the database design image are included among the project files as Database script and ER Diagram.png respectively.
 
  ### REPL and APIs
  Among the project folders is a database script(Databse script) that when executed generates the database. The app is interactive through REPL mode and web APIs.
@@ -56,6 +56,7 @@ get an occupation
  
 
  
+
 
 
 
