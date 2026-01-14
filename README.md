@@ -40,7 +40,7 @@ get a user
 
  #### occupation end points
 list all occupations
- GET:http://localhost:8080/app/users
+ GET:http://localhost:8080/app/occupations
 
 Add an occupation
  POST:http://localhost:8080/)app/occupation
@@ -56,6 +56,7 @@ get an occupation
  
 
  
+
 
 
 
